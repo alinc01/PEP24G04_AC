@@ -9,10 +9,10 @@ Iterating the object will return the serial numbers produced that day by all wor
         - 5p: argument: 5p
             - 1 receives worker name as string
             - 2 receives series produced as list of ints
-        - 10p: using this method more then once for the same worker allows the worker to add new values but not
+        - 10p: using this method more than once for the same worker allows the worker to add new values but not
             retransmit old values .In case existing value is entered by two workers a specific exception
             (DuplicateDataException - created by you) and inheriting ValueError will be raised.
-            (ex name1: 100, 101; name1: 101, 102; results in exception DuplicateDataException) 10p
+            (ex name1: 100, 101; name2: 101, 102; results in exception DuplicateDataException) 10p
         - 10p: method validates that series introduced do not already belong to another worker. In case of conflict
             series will be removed from both workers and information will be added to instance variable that tracks
             cheating workers and then ValueError with message: "Conflict series: <series>, Workers: <nume1>, <nume2>"
@@ -33,3 +33,47 @@ Iterating the object will return the serial numbers produced that day by all wor
    b) 5p: class documentation for all classes
    c) 5p: method documentation for all methods
 """
+from datetime import datetime
+
+
+class DuplicateDataException(ValueError):
+    """ABC COMMENT"""
+    pass
+
+
+class ShoeProductionIterator:
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        pass
+
+    def __init__(self, data):
+        self.data = data
+
+
+class ShoeProduction:
+    def __init__(self, date=datetime.now()):
+        self.date = date
+        self.worker_data = {}
+
+    def add_work(self, worker_name: str, series: list[int]):
+        # if worker_name is not
+        pass
+
+    def __iter__(self):
+        return ShoeProductionIterator(self.worker_data)
+
+
+if __name__ == "__main__":
+    shoe_prod = ShoeProduction(datetime(year=2024, month=12, day=16))
+    shoe_prod.add_work("Joe", [402, 403, 409])
+    shoe_prod.add_work("Ana", [399, 404, 405])
+    shoe_prod.add_work("Tim", [400, 401, 406])
+    try:
+        shoe_prod.add_work("workerX", [406, 407, 408])
+    except DuplicateDataException:
+        print("cheater")
+    with open("production.txt", "w") as file:
+        for serial in shoe_prod:
+            file.write(f"{serial}\n")
