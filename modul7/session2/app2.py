@@ -30,3 +30,13 @@ print(sum(masini, Masina('', 0, '', 0, 0.0)).get_pret() / len(masini))
 
 # pret_t = sum(m.get_pret() for m in masini)
 # print(pret_t / len(masini))
+
+nr_bmw = len(list(filter(lambda m: m.marca == "BMW", masini)))
+print(nr_bmw)
+
+car_audi = list(filter(lambda masina: masina.marca == "Audi", masini))
+print(sum(map(lambda masina: masina.an, car_audi)) / len(list(car_audi)))
+
+marca_cautata = input("Introduceti marca de masina cautata:")
+nr_masini = len(list(filter(lambda m: m.marca == marca_cautata, masini)))
+print(nr_masini)
